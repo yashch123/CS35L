@@ -1,0 +1,20 @@
+#!/bin/sh                                                                                                                                                                                                          
+
+                                                                                                                                                                                         
+sed  '/<tr>/,/<\/td>/d'| #Remove all the English words 
+
+egrep  '<td>.+</td>' | #Get all the Hawaiian words 
+                                                                                                                                                                
+sed 's/<[^>]*>//g'|    #Removing all the HTML Tags
+                                                                                                                                                                 
+tr '[:upper:]' '[:lower:]'| #Converting all the uppercase to lower case letters 
+                                                                                                                                   
+sed 's/[,]/\n/g'| #Replace all the commas with spaces 
+ 
+sed "s/\`/'/g" | #Replacing the okina with the apostrophe
+
+sed 's/\n\n/\n/g'| #Removing the extra new lines
+
+sed "s/[^pk'mnwlhaeiou]*//g"|#Remove all the words with non-hawaiian characters 
+
+sort -u   #sort and remove duplicates      

@@ -1,0 +1,67 @@
+#!/bin/bash                                                                                                                                                                                                        
+
+#Storing all the files from directory into the array                                                                                                                                                               
+
+dir=$1
+RESULT=`ls $dir | sort`
+#echo $RESULT                                                                                                                                                                                                      
+DOT_RESULT=`ls -a $dir | grep "^\." | sort`    #Getting all the dot filenames in sorted order                                                                                                                      
+#echo $DOT_RESULT                                                                                                                                                                                                  
+declare -a arr
+let count=0
+
+#First taking in all the files with dots in their names and putting them in the array. 
+
+for file in $DOT_RESULT
+do
+
+    if [ ! -r "$dir/$file" ]
+        then
+            echo "Error reading $dir/$file file"
+        continue
+        fi
+
+        if [ ! -L "$dir/$file" ]
+        then
+            if [ -f "$dir/$file" ]
+            then
+                arr[$count]="$dir/$file"
+                let count=count+1
+            fi
+        fi
+done
+
+#Then taking all the other files and putting them in the array
+
+for file in $RESULT
+do
+    if [ ! -r "$dir/$file" ]
+    then
+        echo "Error reading $dir/$file file"
+        continue
+    fi
+
+    if [ ! -L "$dir/$file" ]   #if file is not a symbolic link 
+    then
+        if [ -f "$dir/$file" ]  #if the file is actually a file and not a directory or etc. 
+        then
+            arr[$count]="$dir/$file"   #put the file in the array 
+            let count=count+1
+        fi
+    fi
+done
+
+#Making double for loops to compare the files and making hard links for duplicates. 
+for (( i=0; i<$count; i++ ))                                                             
+do
+    let j=$i+1
+for ((; j<$count; j++ ))
+    do
+        cmp -s "${arr[$i]}" "${arr[$j]}"  #compare the files to check if content is the same 
+        if [ $? -eq 0 ]
+        then
+            ln -f "${arr[$i]}" "${arr[$j]}" #if the files are the same then make hard link and delete
+        fi
+
+    done
+done

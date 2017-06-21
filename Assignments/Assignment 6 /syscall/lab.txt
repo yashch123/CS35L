@@ -1,0 +1,107 @@
+
+For this assignment we are using the concept of buffered and
+unbuffered I/O.  We write 2 programs tr2b.c and tr2u.c where tr2b used
+getchar and putchar which uses buffered I/O, whereas tr2u uses write
+and read calls which uses unbuffered I/O.
+tr2u uses read and write which are direct system calls. 
+
+Thus in our program, we take one byte every time and compare it to the arrays we get as input i.e. from and to. 
+Thus we use getchar/read and putchar/write. 
+
+
+It is by convention that, UNIX System shells associates
+the file descriptor 0 with Standard Input of a process, 
+file descriptor 1 with Standard Output, 
+and file desciptor 2 with Standard Error.
+
+Thats why we use 0 with read and then 1 with write as file
+descriptors.
+
+3.
+Now we need a file that is 5,000,000 bytes that is 5MB. 
+I download a txt file form the internet named big.txt 
+which is of 6.2MB and contains an excerpt from a book. 
+
+Now to test our executables using the strace command
+I did man strace and read how it works
+ 
+a. copying one file to another
+
+For tr2b.c:
+
+strace -o tr2b_straceoutput ./tr2b a b < big.txt > tr2b_result.txt
+cat tr2b_straceoutput | wc -l
+230
+
+For tr2u.c:
+
+strace -o tr2u_straceoutput ./tr2u a b < big.txt > tr2u_result.txt
+cat tr2u_straceoutput | wc -l
+9890139
+
+We see that wc -l for tr2b.c gives us 230 lines which is almost the
+same as 230 syscalls whereas the tr2u.c file gives us almost 10000000
+syscalls which is significantly more.  The reason tr2u.c has more
+syscalls is because for each byte we call the read and write syscalls
+which result in a significantly higher number of calls, whereas for 
+tr2b.c there is buffered I/O thus bytes are first stored in a buffer 
+and then syscalls are made for the whole buffer which results in 
+much lesser syscalls, thus faster computing.  
+
+b. copying to terminal
+
+For tr2b.c:
+
+strace -o tr2b_straceoutput2 ./tr2b a b < big.txt
+cat tr2b_straceoutput2 | wc -l
+128664
+
+For tr2u.c:
+
+strace -o tr2u_straceoutput2 ./tr2u a b < big.txt
+cat tr2u_straceoutput2 | wc -l
+9221355
+
+Here we again notice that the buffered I/O has much fewer system calls
+than buffered, for similar reasons.  Also, The difference between
+copying one file to another and copying to terminal is that, when
+copying to terminal more system calls are required. This may be due to
+excessive write system calls required while writing to stdout to
+display on the terminal screen.
+
+
+4. Comparing times:
+
+For tr2b.c:
+
+time ./tr2b a b < big.txt > timeresults.txt
+
+real 0m0.241s
+user 0m0.181s
+sys  0m0.006s
+
+time ./tr2b a b < big.txt
+
+real 0m1.187s
+user 0m0.383s
+sys  0m0.271s
+
+For tr2u.c:
+
+time ./tr2u a b < big.txt > timeresults2.txt
+
+real 0m6.542s
+user 0m0.351s
+sys  0m6.117s
+
+time ./tr2u a b < big.txt
+
+real 0m9.626s
+user 0m0.385s
+sys  0m9.235s
+
+As expected here we see that time taken for completion is much more
+for unbuffered I/O. This is because there is less overhead and also
+much lesser system calls in buffered I/O.  We clearly see that the
+buffered I/O programs using getchar and putchar are much faster as
+compared to the unbuffered read and write program.

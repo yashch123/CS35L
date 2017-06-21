@@ -1,0 +1,94 @@
+
+First did wget for the assignment page and then did wget for the
+coreutils link:
+
+1. To get the file:
+wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-7.6.tar.gz
+
+To unzip file:
+tar -xzvf coreutils-7.6.tar.gz
+
+2. 
+
+Go into INSTALL and read about —prefix. 
+To install file: 
+
+cd coreutils-7.6
+./configure —prefix=“/u/cs/ugrad/yashc/coreutilsInstall”
+make
+make install
+make installcheck 
+
+3. By going into the src directory to the unmodified coreutils-7.6.
+Making sure we have the 'en_US.UTF-8' locale.
+
+cd coreutilsInstall
+cd bin
+./ls -l 
+
+Here we get the wrong format of the date. 
+
+Note that we are using ./ls instead of ls because we downloaded the
+earlier version of ls and have to use it as an executable to mirror
+the error; the recent versions of ls are all fixed.
+
+4.  To fix this bug I copy and paste the Brady’s patch into a file
+called patch_file.
+
+cd coreutils-7.6
+emacs patch_file 
+and paste the Brady’s patch in there
+
+5.
+
+patch -p1 < patch_file make Only ls.c was modified hence the number of
+files displayed was less during make this time.  We only recompiled
+the files that had been modified.
+
+6.
+
+cd coreutils-7.6/src
+./ls -l /bin/bash
+
+-rwxr-xr-x 1 root root 941880 Dec 22  2015 /bin/bash
+
+This time we see that the format was as we wanted. 
+
+If we go into coreutilsInstall/bin
+
+cd coreutilsInstall/bin
+./ls -l 
+
+As expected we get the wrong format for the date.
+
+We use the make command for the patch and that modifies the src in the
+coreutils-7.6 directory and thus the ls here is fixed. But, the ls
+executable in coreutilsInstall is still not fixed hence the wrong
+format is still shown there.
+
+
+Now creating our own files and creating a file made more than an year ago.
+
+We create these files in coreutils-7.6/src:
+
+touch file1
+touch -t 201202020202 file2
+
+Then doing ./ls -l  we get:
+
+-rw-r--r-- 1 yashc csugrad      0 Oct 14 19:53 file1
+-rw-r--r-- 1 yashc csugrad      0 Feb  2  2012 file2
+
+We see that when the file is at least a year old, the ls shows the
+year along with the date and month. Whereas for a recent file we only
+see the time,date and month.
+
+The difference in the outputs are: 
+
+Fixed ./ls -l in coreutils-7.6/src:
+-rw-r--r-- 1 yashc csugrad      0 Oct 14 19:53 file1
+
+Broken ./ls -l in coreutilsInstall/bin: 
+-rw-r--r-- 1 yashc csugrad      0 2016-10-14 19:53 file1
+
+

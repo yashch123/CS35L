@@ -1,0 +1,71 @@
+1. man -k command.
+#Use man man and manually check through all options to find the right one 
+
+2./usr/bin/cp and /usr/bin/wc
+#Use the whereis command 
+
+3.X,w,[
+#use find -name ? in the /usr/bin 
+
+4./etc/alternatives/emacs
+#Use the readlink command to find the path 
+
+5.chmod g+s gives group permissions whereas o-x removes executable permission for others. 
+#TA Slides
+
+6.find -mtime -21
+#Use man find
+
+7. Used find -mtime 21 -type d 
+#0 directories since this returned no results.
+
+8. 354  
+#We use find . -type l | wc -l. 
+
+9. kapptemplate
+#used the command ls -t. Found it using man ls
+
+10.From the current environment of the machine. 
+#TA Slides
+
+11.  Some command with the string sort in them are:
+
+sort-lines
+sort-pages
+sort-fields
+sort-columns
+sort-paragraphs
+sort-regexp-fields
+sort-numeric-fields
+rmail-sort-by-author
+rmail-sort-by-date
+rmail-sort-by-labels
+rmail-sort-by-lines
+rmail-sort-by-recipient
+rmail-sort-by-subject
+rmail-sort-by-correspondent
+Buffer-menu-sort-by-column
+Buffer-menu-sort
+ibuffer-toggle-sorting-mode
+ibuffer-invert-sorting
+
+#Use the emacs command C-h d and then search “sort”). apropos documentation
+
+12.
+C-M-a: Move to start of the function
+C-M-b: Move backward over next s-expression
+C-M-c: Exit recursive editing level
+C-M-d: Move to right of first left parenthesis 
+C-M-e: Move to end of the defined function
+C-M-f: Move forward over the next s-expression
+C-M-g: Undefined
+C-M-h: Sets region for the current defined function 
+
+13.C-g is used to cancel most recent keystrokes.
+
+14.The yank function is more commonly known as Pasting. Used as C-y. It is used to re insert previously killed text.
+
+15.The dired function shows the total space available whereas the ls -l function just shows the total space used. 
+
+
+

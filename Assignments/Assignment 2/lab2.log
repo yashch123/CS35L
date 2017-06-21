@@ -1,0 +1,97 @@
+
+export LC_ALL=‘C’
+Used this command to change my system’s locale to C. 
+
+sort /usr/share/dict/words > words
+Got the file ‘words’ and sorted its contents
+
+wget http://web.cs.ucla.edu/classes/fall16/cs35L/assign/assign2.html
+Got a copy of the webpage using the wget command 
+
+
+Commands: 
+
+1. cat assign2.html | tr -c 'A-Za-z' '[\n*]'
+This command separates all the Alphabetic characters i.e. A-Z and a-z from all the other characters. Thus, it replaces all the characters that are not alphabets with new lines. 
+
+2. cat assign2.html | tr -cs ‘A-Za-z’ ‘[\n*]’
+This command replaces each continuous group of non alphabetic characters with a new line. 
+Difference in output: No empty lines displayed. 
+
+3. cat assign2.txt | tr -cs 'A-Za-z' '[\n*]' | sort > output3.txt
+All words are sorted in alphabetical order. Each word has a new line. 
+
+4. cat assign2.txt | tr -cs 'A-Za-z' '[\n*]' | sort -u > output3.txt
+Sorts all the words alphabetically but displays each word only once. 
+
+5. cat assign2.txt | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words > output3.txt
+Outputs 3 columns: 
+1st column: Words unique to assign2.txt
+2nd column: Words unique to words
+3rd column: Words common to both the files. 
+
+6. cat assign2.txt | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - words > output3.txt
+Only outputs words that are unique to assign2.txt (the HTML page).
+
+
+After this, I used wget to get the copy of the Hawaiian to English words page. 
+wget http://mauimapp.com/moolelo/hwnwdseng.htm
+
+
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - hwords | wc -l 
+
+
+Spell Checker
+—————————————————————
+
+We first need to get all the Hawaiian words into ‘hwords’. Running build words on our assignment page does the job. 
+cat hwnwdseng.htm | ./buildwords > hwords 
+
+Essentially how these spelling checkers are working is: They compare and check for words in the files ‘words’ and ‘hwords’, and words that are not there in the webpage. 
+
+Thus, If there is a word in ‘hwords’ and not in the webpage then it is misspelled in Hawaiian.
+
+Similarly if there is a word in ‘words’ and not there in the webpage, it is misspelled in English. 
+
+First we use the spell checker on ‘hwords’ itself: 
+cat hwords | tr '[:upper:]' '[:lower:]'| sort -u | comm -23 - hwords | wc -l 
+
+As expected we find that there are no such words which are misspelled in the ‘hwords’ dictionary itself. 
+
+On the webpage: 
+
+Hawaiian words that are misspelled: 
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | tr '[:upper:]' '[:lower:]'| sort -u | comm -23 - hwords 
+
+We will count the number of words using the wc -l command. 
+
+Number of misspelled English words: 39 words
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | tr '[:upper:]' '[:lower:]'| sort -u | comm -23 - words | wc -l
+
+Number of misspelled Hawaiian words: 409 words
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | tr '[:upper:]' '[:lower:]'| sort -u | comm -23 - hwords | wc -l 
+
+Words misspelled as English but not as Hawaiian: halau and wiki 
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - words | comm -12 - hwords
+
+The comm -23 words gives us the misspelled English words, whereas the comm -12 hwords gives us the words right in Hawaiian. 
+
+Words misspelled in Hawaiian but not in English: attempt,cat,input etc. 
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | tr '[:upper:]' '[:lower:]' | sort -u | comm -23 - hwords | comm -12 - words
+
+Using the wc -l option we find that there are 372 such words. 
+
+______________________________
+
+
+
+
+
+
+
+
+
+
+
+
+

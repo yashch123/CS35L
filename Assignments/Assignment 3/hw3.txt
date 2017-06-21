@@ -1,0 +1,53 @@
+1.  A goto statement pointed to the label
+"case_long_iso_time_style:”. The goto statement was removed anyway
+thus it was not necessary to remove the label since it would never
+have been accessed anyways.
+
+2. The patch fixes problems in date format mainly for english
+locales. If the computer was being used in a country where English is
+not the traditional language, this patch would cause problems and
+won’t display the date properly. Also, for files that are 1 year older
+there specific time the file as created is not shown; this time create
+some problems if i am working in a company and want to know the
+specific time a file was created.
+
+
+3.
+
+When we run the script on /dev/null we get the following:
+
+Traceback (most recent call last):
+  File "randline.py", line 48, in <module>
+    main()
+  File "randline.py", line 42, in main
+    sys.stdout.write(generator.chooseline())
+  File "randline.py", line 12, in chooseline
+    return random.choice(self.lines)
+  File "/usr/lib64/python2.6/random.py", line 261, in choice
+    return seq[int(self.random() * len(seq))]
+    # raises IndexError if seq is empty
+IndexError: list index out of range
+
+The main thing to note here is that the list is empty and thus we get
+the error “IndexError: list index out of range”.  The class randline
+has 0 lines to access since there is null values and hence we get all
+these errors.
+
+4.
+To run python3 we go to lnxsrv07 thus we get:
+
+cd yashc@lnxsrv07.seas.ucla.edu
+cd lab3  #My directory containing randine.py
+/usr/local/cs/bin/python3 randline.py /dev/null 
+#Since python3 is in /usr/local/cs/bin
+
+The output we get here is: 
+
+File "randline.py", line 43
+    except IOError as (errno, strerror):
+                      ^
+SyntaxError: invalid syntax
+
+As we can see in python3 the tuple parameter unpacking was removed
+causing the syntax to be different.  Thus we can’t pass in tuples and
+will have to pass in single arguments.

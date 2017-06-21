@@ -1,0 +1,12 @@
+Description:
+I used X11 to use the gitk command on my macbook.
+
+The window is divided into multiple sections.
+The top left shows the branching of the repository neatly along with all the commit messages. We can also see the HEAD pointer. (master)
+
+Also, in the middle we see the list of name and email addresses of all the people who have committed to the repository.
+
+On the right we see the dates along with the time when all the files were committed. 
+
+On the bottom we see the parent,child,branches,committer and commit message about the selected commit.
+

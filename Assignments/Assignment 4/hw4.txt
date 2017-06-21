@@ -1,0 +1,82 @@
+
+2.
+I start off the homework by checking out v3.0 in a new branch called "quote"
+cd diffutils
+git checkout v3.0 -b quote
+
+3.
+ To make sure I'm in the right branch I do
+git branch
+which shows me *quote thus showing I'm in the quote branch.
+
+To apply our patch into this branch we do:
+patch -p1 < ./quote-3.0-patch.txt
+
+5.  We do git status to check that there are 6 .c files that are
+modified.  I manually go thorugh each file and change the log of each
+file using C-x 4 a.
+
+emacs ChangeLog to see the logs you've written in each file.
+
+6.
+To commit my changes:
+git add .
+git commit -F ChangeLog
+
+7.
+Then to make a formt patch we use:
+git format-patch -1 --stdout > formatted-patch.txt
+
+8.
+For this part Ben Spector was my Lab Partner.
+
+I made a new temp directory tempgit, then:
+git checkout v3.0 -b partner
+
+After sharing the files I got his file into my server and then applied git am command to it
+git am git am ~/garvit/formatted-patch_garvit.txt
+After which it showed:
+git am ~/garvit/formatted-patch_garvit.txt
+
+I checked git log to see the commit added by Garvit:
+
+commit b976183fc451b3a93cfa5fe70dd27089d70ba4f4
+Author: Garvit Rajkumar Pugalia <garvit@lnxsrv05.seas.ucla.edu>
+Date:   Fri Oct 21 19:23:16 2016 -0700
+
+    2016-10-21 Garvit Rajkumar Pugalia <garvit@lnxsrv05.seas.ucla.edu>
+    
+        * diff.c: Changed the grave accent ` to apostrophes ' for every line except for comments.
+    
+        * diff3.c: Changed the grave accent ` to apostrophes ' for every line except for comments for the version 3.0.
+    
+        * util.c: Changed the grave accent ` to apostrophes '.
+    
+        * dir.c: Changed the grave accent ` to apostrophes ' for every string literal.
+    
+        * sdiff.c: Changed the grave accent ` to apostrophes ' for every string literal or command.
+    
+        * cmp.c: Changed the grave accent ` to apostrophes ' for every line except for comments.
+
+Now to bootstrap and checking it it works with make check
+To get help2man, I export the path.
+
+export PATH=/usr/local/cs/bin:$PATH
+./bootstrap
+./configure
+make
+make check
+
+Now to make sure that it worked we do:
+src/diff - .
+and get the right format as we expect: “diff: cannot compare '-' to a directory”
+
+9.  To ensure that the ChangeLog also works we run the command: make distsir
+This creates a new directory inside our diffutils namely
+diffutils-3.0.1-5a55
+cd diffutils-3.0.1-5a55
+Inside diffutils-3.0.1-5a55 we have a file ChangeLogs.  Opening that file we
+see my partners commit along with the message and timestamp.
+
+10.
+Since I have a macbook I use X11 to look at gitk and the page. 

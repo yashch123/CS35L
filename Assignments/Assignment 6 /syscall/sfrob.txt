@@ -1,0 +1,83 @@
+In this we measure the differences in performance between sfrob, sfrobu and sfrobs. 
+Performance here includes the time taken by the program to generate the desier output, the number of comparisons etc. 
+
+We use the programs over inputs of varying lengths:
+
+10 line file:
+
+time ./sfrob < test.txt
+real   0m0.002s
+user   0m0.000s
+sys    0m0.002s
+
+time ./sfrobu < test.txt 
+real 0m0.002s
+user 0m0.001s
+sys  0m0.001s
+
+time ./sfrobs < test.txt
+real 0m0.007s
+user 0m0.005s
+sys  0m0.001s
+
+
+100 file line:
+
+time ./sfrob < lab.txt
+real 0m0.003s
+user 0m0.001s
+sys  0m0.000s
+
+time ./sfrobu < lab.txt
+real 0m0.007s
+user 0m0.000s
+sys  0m0.006s
+
+time ./sfrobs < lab.txt
+real 0m0.006s
+user 0m0.004s
+sys  0m0.003s
+
+100000 line file:
+time ./sfrob < big.txt
+real   0m2.353s
+user   0m1.209s
+sys    0m0.168s
+
+time ./sfrobu < big.txt
+real	    0m9.002s
+user	    0m1.116s
+sys	    0m7.876s
+
+time ./sfrobs < big.txt
+
+
+Differences between sfrobu and sfrob:
+ We notice that the time taken by
+sfrob and sfrobu is almost similar. The sys times are lesser for sfrob
+indicating that there are much lesser syscalls from sfrob. Apart from
+this we notice that the number of comparisons for both sfrob and
+sfrobu are exactly similar. Thus both work in a similar manner except
+the fact that sfrob calls lesesr number of syscalls.
+
+sfrobs comparison: For sfrobs we notice that it takes relatively more
+time than both sfrob and sfrobu.  Thus, altogether its a much more
+expensive procedure to call sfrobs than sfrob or sfrobu.  The reasons
+may vary from sicne its a shell script, it takes more time to operate,
+much more syscalls, pipelining. 
+
+ Looking at the nummber of comparisons
+against number of lines we see:
+
+1 line: 17 comparisons
+10 line: 400 comparisons
+100 line: 2696 comparisons
+1000 line: 45564 comparisons
+100000: 18670742 comparisons
+
+Using Linear Regression tools on this data 
+we see that there is an almost linear relationship between
+the comparisons and number of lines of text. 
+The slope being approximately 20 
+Thus, we can approximate a linear function that relates
+comparisons and number of lines. 
